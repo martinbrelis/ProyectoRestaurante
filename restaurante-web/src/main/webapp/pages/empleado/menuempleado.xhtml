@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <ui:include src="/pages/commons/commons.xhtml"></ui:include>
+    </h:head>
+    
+    <h:body>    
+    
+    	<ui:include src="/pages/commons/navbar.xhtml"></ui:include>	
+       
+
+		<b:container>
+			<b:row>
+				<h:form id="formMenuEmpleado">
+					<b:jumbotron>
+					  <h1>Menú</h1>
+					  
+					  <p:dataGrid id="dataAlimentosAsignados" var="tipoAlimento" value="#{menuEmpleadoController.tiposAlimentos}" columns="1" layout="grid">
+					  	
+					  	<b:panel rendered="#{not empty menuEmpleadoController.tiposAlimentos}" title="#{tipoAlimento.descripcion}" look="primary" collapsible="false">
+					  		<p:dataView var="alimento" value="#{tipoAlimento.alimentos}" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+					  			
+					  			<p:dataViewGridItem>
+					  				<p:panel header="#{alimento.nombre}" style="text-align: center">
+					  					<h:panelGrid columns="1" style="width: 100%">
+					  						<b:image value="/resources/images/alimentos/#{alimento.imagen}" width="100%"></b:image>
+												<h:outputText value="#{alimento.descripcion}"></h:outputText>
+												<h:outputText value="#{alimento.precio}"></h:outputText>
+					  					</h:panelGrid>
+					  				</p:panel>
+					  			</p:dataViewGridItem>
+					  			
+					  			<p:dataViewListItem>
+					  				<h:panelGrid columns="2" style="width: 100%" columnClasses="logo,detail">
+					  				<b:image value="/resources/images/alimentos/#{alimento.imagen}" width="100%"></b:image>
+
+										<p:outputPanel>
+											<h:panelGrid columns="2" cellpadding="5">
+												<h:outputText value="Nombre: "></h:outputText>
+												<h:outputText value="#{alimento.nombre}"></h:outputText>
+												
+												<h:outputText value="Descripción: "></h:outputText>
+												<h:outputText value="#{alimento.descripcion}"></h:outputText>
+										
+												<h:outputText value="Precio: "></h:outputText>
+												<h:outputText value="#{alimento.precio}"></h:outputText>
+											
+												<h:outputText value="Descuento: "></h:outputText>
+												<h:outputText value="#{alimento.descuento}"></h:outputText>
+											</h:panelGrid>
+										</p:outputPanel>
+					  				</h:panelGrid>
+					  			</p:dataViewListItem>
+					  			
+					  		</p:dataView>
+					  	</b:panel>
+					  
+					  </p:dataGrid>
+					</b:jumbotron>
+				</h:form>
+			</b:row>
+		</b:container>
+    </h:body>
+</html>

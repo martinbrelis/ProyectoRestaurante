@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+    <h:head>
+        <ui:include src="/pages/commons/commons.xhtml"></ui:include>
+    </h:head>
+    
+    <h:body>
+    
+    <ui:include src="/pages/commons/navbar.xhtml"></ui:include>	
+
+	<b:container>
+		<b:row>
+		    <h:form id="formAdminPerfiles">
+		    
+		    	<b:growl id="msgValidaciones" placementFrom="top" showDetail="true" showSummary="true" escape="true">
+    		
+    			</b:growl>
+		    
+		    	<b:panel title="Administración de Perfiles" look="primary" collapsible="false">
+		    		<b:commandButton look="primary" id="btnAgregar" value="Agregar" size="lg" style="margin-bottom: 20px" ajax="true" oncomplete="$('#amodal').modal('show')" 
+		    						 onclick="ajax:adminPerfilesController.inicializarComponentes()" update="formRegistroPerfiles"></b:commandButton>
+		    		
+		    		<b:dataTable id="tblPerfiles" style="width: 100%" excel="true" csv="true" pdf="true" value="#{adminPerfilesController.roles}" var="rol">
+					    <b:dataTableColumn label="Nombre">
+					    	<h:outputText value="#{rol.nombre}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Creación">
+					    	<h:outputText value="#{rol.fechaCreacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Modificación">
+							<h:outputText value="#{rol.fechaModificacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Estatus">
+					    	<b:label value="Habilitado" rendered="#{rol.estatus}" severity="success"></b:label>
+					    	<b:label value="Deshabilitado" rendered="#{!rol.estatus}" severity="danger"></b:label>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Actualizar">
+					    	<b:commandButton icon="pencil" look="success" ajax="true" size="sm" update="formRegistroPerfiles" oncomplete="$('#amodal').modal('show')" onclick="ajax:adminPerfilesController.cargarInformacionModal(rol)"></b:commandButton>	
+					    </b:dataTableColumn>
+					    
+					  </b:dataTable>
+		    	</b:panel>		    
+    		</h:form>
+    		
+    		<b:modal id="amodal" title="Registro de Perfiles" styleClass="modalPseudoClass">
+			
+				<b:form id="formRegistroPerfiles">
+				
+					<b:inputText id="txtNombre" value="#{adminPerfilesController.rol.nombre}" label="Nombre" colMd="12" required="true" requiredMessage="El nombre es requerido"></b:inputText>
+
+					<b:switch id="swEstatus" value="#{adminPerfilesController.rol.estatus}" offText="Habilitar" onText="Deshabilitar" 
+							  label="Estatus: " offColor="success" onColor="danger" colMd="6" span="12" rendered="#{adminPerfilesController.rol.idRol != null}"></b:switch>
+					
+
+					<b:row style="margin-bottom: 10px; margin-top: 10px">
+						<b:column colMd="6">
+							<b:button id="btnCancelar" value="Cancelar" largeScreen="full-width" look="danger" dismiss="modal" onclick="return false;"></b:button>
+						</b:column>
+						
+						<b:column colMd="6">
+							<b:commandButton id="btnGuardar" largeScreen="full-width" value="Guardar" look="success" update="formRegistroPerfiles, formAdminPerfiles:tblPerfiles, formAdminPerfiles:msgValidaciones" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') }" onclick="ajax:adminPerfilesController.guardar()" rendered="#{adminPerfilesController.rol.idRol == null}"></b:commandButton>
+							<b:commandButton id="btnActualizar" largeScreen="full-width" value="Actualizar" look="success" update="formRegistroPerfiles, formAdminPerfiles:tblPerfiles, formAdminPerfiles:msgValidaciones" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') }" onclick="ajax:adminPerfilesController.actualizar()" rendered="#{adminPerfilesController.rol.idRol != null}"></b:commandButton>
+						</b:column>
+					</b:row>
+
+					<b:fetchBeanInfos></b:fetchBeanInfos>
+					<b:messages></b:messages>
+				</b:form>
+			
+			</b:modal>
+			
+		</b:row>
+	</b:container>           
+
+    </h:body>
+</html>

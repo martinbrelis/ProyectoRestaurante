@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+	<title>Restaurante App</title>
+	<meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+	<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/favicon.ico"/>
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+	
+    <script type="text/javascript">
+       	$.blockUI.defaults.message = '<div style="padding-top:1em"><b:spinner name="circle-o-notch" size="2x" /> Por favor espere </div>';
+    </script>
+        	
+	<style type="text/css">
+	
+		body {
+			padding-top: 80px
+		}
+	
+	    /*demo*/
+	    .ui-dataview-list .ui-dataview-row {
+	        border-bottom: 1px solid #A8A8A8;
+	        padding: 25px 10px;
+	        /* with the exported variables from Nova and Luna Themes*/
+	        border-bottom-color: var(--input-border-color, #A8A8A8);
+	    }
+	 
+	    .logo {
+	        width: 15%;
+	    }
+	    .detail {
+	        width: 85%;
+	        padding-left: 25px;
+	    }
+	    
+	    #scrollUpCustom {
+		  background-image: url("#{request.contextPath}/resources/images/scrollup.png");
+		  background-repeat: no-repeat;
+		  background-size: 40px 40px;
+		  bottom: 65px;
+		  right: 18px;
+		  width: 38px; /* width of the custom image */
+		  height: 38px; /* height of the custom image */
+		  outline: none;
+		}
+	    
+	</style>
+	
+	<b:scrollUp distance="200" animation="fade" text="" scrollTitle="false" name="scrollUpCustom" />
+</ui:composition>

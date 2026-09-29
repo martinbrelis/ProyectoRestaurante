@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+    <h:head>
+        <ui:include src="/pages/commons/commons.xhtml"></ui:include>
+    </h:head>
+    
+    <h:body>
+    
+    <ui:include src="/pages/commons/navbar.xhtml"></ui:include>	
+
+	<b:container>
+		<b:row>
+		    <h:form id="formAdminEmpleados">
+		    
+		    	<b:growl id="msgValidaciones" placementFrom="top" showDetail="true" showSummary="true" escape="true">
+    		
+    			</b:growl>
+		    
+		    	<b:panel title="Administración de Empleados" look="primary" collapsible="false">
+		    		<b:commandButton look="primary" id="btnAgregar" value="Agregar" size="lg" style="margin-bottom: 20px" ajax="true" oncomplete="$('#amodal').modal('show')" 
+		    						 onclick="ajax:adminEmpleadosController.inicializarComponentes()" update="formRegistroEmpleados"></b:commandButton>
+		    		
+		    		<b:dataTable id="tblEmpleados" style="width: 100%" excel="true" csv="true" pdf="true" value="#{adminEmpleadosController.empleados}" var="empleado">
+					    <b:dataTableColumn label="Nombre">
+					    	<h:outputText value="#{empleado.nombre}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Primer Apellido">
+					    	<h:outputText value="#{empleado.primerApellido}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Segundo Apellido">
+					    	<h:outputText value="#{empleado.segundoApellido}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Rol">
+					    	<h:outputText value="#{empleado.rol.nombre}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					   	<b:dataTableColumn label="Email">
+					    	<h:outputText value="#{empleado.email}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Creación">
+					    	<h:outputText value="#{empleado.fechaCreacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Modificación">
+							<h:outputText value="#{empleado.fechaModificacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Estatus">
+					    	<b:label value="Habilitado" rendered="#{empleado.estatus}" severity="success"></b:label>
+					    	<b:label value="Deshabilitado" rendered="#{!empleado.estatus}" severity="danger"></b:label>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Actualizar">
+					    	<b:commandButton icon="pencil" look="success" ajax="true" size="sm" update="formRegistroEmpleados" oncomplete="$('#amodal').modal('show')" onclick="ajax:adminEmpleadosController.cargarInformacionModal(empleado)"></b:commandButton>	
+					    </b:dataTableColumn>
+					  </b:dataTable>
+		    	</b:panel>		    
+    		</h:form>
+    		
+    		<b:modal id="amodal" title="Registro de Empleados" styleClass="modalPseudoClass">
+			
+				<b:form id="formRegistroEmpleados">
+					<b:inputText id="txtNombre" value="#{adminEmpleadosController.empleado.nombre}" label="Nombre: " colMd="6" required="true" requiredMessage="El nombre es requerido"></b:inputText>
+					<b:inputText id="txtPrimerApellido" value="#{adminEmpleadosController.empleado.primerApellido}" label="Primer Apellido: " colMd="6" required="true" requiredMessage="El primer apellido es requerido"></b:inputText>
+					
+					<b:inputText id="txtSegundoApellido" value="#{adminEmpleadosController.empleado.segundoApellido}" label="Segundo Apellido: " colMd="6" required="true" requiredMessage="El segundo apellido es requerido"></b:inputText>
+
+					<b:inputText id="txtUsuario" value="#{adminEmpleadosController.empleado.usuario}" label="Usuario: " colMd="6" required="true" requiredMessage="El usuario es requerido"></b:inputText>
+					<b:inputText id="txtPassword" type="password" value="#{adminEmpleadosController.empleado.password}" label="Contraseña: " colMd="6" required="true" requiredMessage="La contraseña es requerida"></b:inputText>
+
+
+					<b:inputText id="txtEmail" value="#{adminEmpleadosController.empleado.email}" label="Email: " colMd="12" required="true" requiredMessage="El email es requerido" validatorMessage="Email inválido">
+						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
+					</b:inputText>
+					
+					<b:selectOneMenu id="cboRol" value="#{adminEmpleadosController.empleado.rol.idRol}" colMd="6" required="true" requiredMessage="El rol es requerido" label="Rol" span="12">
+						<f:selectItem itemValue="" itemLabel="--Seleccione--"></f:selectItem>
+						<f:selectItems value="#{adminEmpleadosController.roles}" var="rol" itemValue="#{rol.idRol}" itemLabel="#{rol.nombre}"></f:selectItems>
+					</b:selectOneMenu>
+					
+					<b:switch id="swEstatus" value="#{adminEmpleadosController.empleado.estatus}" label="Estatus" offText="Habiltar" onText="Deshabilitar" offColor="success" onColor="danger" rendered="#{adminEmpleadosController.empleado.idEmpleado != null}" colMd="6" span="12"></b:switch>
+					
+					<b:row style="margin-bottom: 10px; margin-top: 10px">
+						<b:column colMd="6">
+							<b:button largeScreen="full-width" value="Cancelar" look="danger" dismiss="modal" onclick="return false;" style="width: 100%"></b:button>
+						</b:column>
+						
+						<b:column colMd="6">
+							<b:commandButton id="btnGuardar" value="Guardar" onclick="ajax:adminEmpleadosController.guardar()" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') } " look="success" update="formRegistroEmpleados, formAdminEmpleados:msgValidaciones, formAdminEmpleados:tblEmpleados" style="width: 100%" rendered="#{adminEmpleadosController.empleado.idEmpleado == null}"></b:commandButton>
+							<b:commandButton id="btnActualizar" value="Actualizar" onclick="ajax:adminEmpleadosController.actualizar()" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') } " look="success" update="formRegistroEmpleados, formAdminEmpleados:msgValidaciones, formAdminEmpleados:tblEmpleados" style="width: 100%" rendered="#{adminEmpleadosController.empleado.idEmpleado != null}"></b:commandButton>
+						</b:column>
+					</b:row>
+					
+					<b:fetchBeanInfos></b:fetchBeanInfos>
+					<b:messages></b:messages>
+				</b:form>
+			
+			</b:modal>
+			
+		</b:row>
+	</b:container>           
+
+    </h:body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+
+	<b:container>
+		<h:form id="formNavbar">
+		<b:navBar brandImg="#{request.contextPath}/resources/images/login/loginrestaurante.jpg" brandImgStyle="width: 45px" brandHref="#" fluid="true" inverse="true" fixed="top">
+		  <b:navbarLinks>
+		  
+		  	<!-- :::::::::::: MENU DE ADMINISTRADOR GENERAL ::::::::::::: -->
+		  
+		    <b:navLink value="Restaurantes" href="#{request.contextPath}/pages/admin/adminrestaurantes.jsf" rendered="#{sessionBean.empleado.superadmingeneral}"></b:navLink>
+		    <b:navLink value="Tipo de Restaurantes" href="#{request.contextPath}/pages/admin/admintiposrestaurantes.jsf" rendered="#{sessionBean.empleado.superadmingeneral}"></b:navLink>
+		    <b:navLink value="Perfiles" href="#{request.contextPath}/pages/admin/adminperfiles.jsf" rendered="#{sessionBean.empleado.superadmingeneral}"></b:navLink>		  	
+		  
+		  	<!-- :::::::::::: MENU DE ADMINISTRADOR DE SUCURSAL ::::::::::::: -->
+		  	
+		  	<b:navLink value="Menú" href="#{request.contextPath}/pages/admin/adminmenu.jsf" rendered="#{sessionBean.empleado.superadmin}"></b:navLink>
+		  	<b:navLink value="Sucursales" href="#{request.contextPath}/pages/admin/adminsucursales.jsf" rendered="#{sessionBean.empleado.superadmin}"></b:navLink>
+		  	<b:navLink value="Tipos de Alimentos" href="#{request.contextPath}/pages/admin/admintiposalimentos.jsf" rendered="#{sessionBean.empleado.superadmin}"></b:navLink>
+		  	<b:navLink value="Alimentos" href="#{request.contextPath}/pages/admin/adminalimentos.jsf" rendered="#{sessionBean.empleado.superadmin}"></b:navLink>
+		  	<b:navLink value="Empleados" href="#{request.contextPath}/pages/admin/adminempleados.jsf" rendered="#{sessionBean.empleado.superadmin}"></b:navLink>
+		  	
+			<!-- :::::::::::: MENU DE EMPLEADO DE SUCURSAL ::::::::::::: -->
+
+			<b:navLink value="Menú" href="#{request.contextPath}/pages/empleado/menuempleado.jsf" rendered="#{sessionBean.empleado.rol.idRol == 7}"></b:navLink>
+
+		    <b:navLink value="Cerrar Sesión" onclick="ajax:sessionClosedBean.cerrarSesion()" ajax="true"></b:navLink>
+		    
+		    <b:navLink>
+		    	<b:socialShare shares="facebook,twitter,linkedin" disableBlock="true" url="https://www.udemy.com/"></b:socialShare>
+		    </b:navLink>
+		  
+		  </b:navbarLinks>
+		</b:navBar>
+		</h:form>
+	</b:container>
+	
+	<b:container>
+		<b:row>
+		    <b:well>
+				<b:row>		
+				   <b:column colMd="2" style="text-align: center">
+				   		<b:image value="/resources/images/empleado.png" rendered="#{restaurante.imagen == null}" style="width: 70%"></b:image>
+				   </b:column>
+			
+				   <b:column colMd="10">
+						<h:outputText class="text-justify" value="Bienvenido: #{sessionBean.empleado.nombre}"></h:outputText> <br/>
+						<h:outputText class="text-justify" value="Perfil: #{sessionBean.empleado.rol.nombre}"></h:outputText> <br/>
+						<h:outputText class="text-justify" value="Sucursal: #{sessionBean.empleado.sucursal.nombre}"></h:outputText>
+				   </b:column>
+		       </b:row>
+		    </b:well>
+		</b:row>	
+	</b:container>
+
+</ui:composition>

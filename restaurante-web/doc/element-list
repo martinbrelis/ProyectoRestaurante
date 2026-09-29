@@ -1,0 +1,13 @@
+com.di3go.restauranteentities.entity
+com.di3go.restaurantesdata.connection
+com.di3go.restaurantesdata.dao
+com.di3go.restaurantesdata.dao.impl
+com.di3go.restaurantesdata.dao.impl.test
+com.di3go.restaurantesdata.enums
+com.di3go.restaurantesdata.myexceptions
+com.di3go.restauranteservice.services
+com.di3go.restauranteweb.controllers
+com.di3go.restauranteweb.converters
+com.di3go.restauranteweb.filters
+com.di3go.restauranteweb.session
+com.di3go.restauranteweb.utils

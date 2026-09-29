@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+    <h:head>
+        <ui:include src="/pages/commons/commons.xhtml"></ui:include>
+    </h:head>
+    
+    <h:body>
+    
+    <ui:include src="/pages/commons/navbar.xhtml"></ui:include>	
+
+	<b:container>
+		<b:row>
+		    <h:form id="formAdminSucursales">
+		    
+		    	<b:growl id="msgValidaciones" placementFrom="top" showDetail="true" showSummary="true" escape="true">
+    		
+    			</b:growl>
+		    
+		    	<b:panel title="Administración de Sucursales" look="primary" collapsible="false">
+		    		<b:commandButton look="primary" id="btnAgregar" value="Agregar" size="lg" style="margin-bottom: 20px" ajax="true" oncomplete="$('#amodal').modal('show')" 
+		    						 onclick="ajax:adminSucursalesController.inicializarComponentes()" update="formRegistroSucursales"></b:commandButton>
+		    		
+		    		<b:dataTable id="tblSucursales" style="width: 100%" excel="true" csv="true" pdf="true" value="#{adminSucursalesController.sucursales}" var="sucursal">
+					    <b:dataTableColumn label="Nombre">
+					    	<h:outputText value="#{sucursal.nombre}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+						<b:dataTableColumn label="Restaurante">
+					    	<h:outputText value="#{sucursal.restaurante.nombre}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Creación">
+					    	<h:outputText value="#{sucursal.fechaCreacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Fecha de Modificación">
+							<h:outputText value="#{sucursal.fechaModificacion}" converter="#{localDateTimeConverter}"></h:outputText>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Estatus">
+					    	<b:label value="Habilitado" rendered="#{sucursal.estatus}" severity="success"></b:label>
+					    	<b:label value="Deshabilitado" rendered="#{!sucursal.estatus}" severity="danger"></b:label>
+					    </b:dataTableColumn>
+					    
+					    <b:dataTableColumn label="Actualizar">
+					    	<b:commandButton icon="pencil" look="success" ajax="true" size="sm" update="formRegistroSucursales" oncomplete="$('#amodal').modal('show')" onclick="ajax:adminSucursalesController.cargarInformacionModal(sucursal)"></b:commandButton>	
+					    </b:dataTableColumn>
+					  </b:dataTable>
+		    	</b:panel>		    
+    		</h:form>
+    		
+    		<b:modal id="amodal" title="Registro de Tipo de Alimentos" styleClass="modalPseudoClass">
+			
+				<b:form id="formRegistroSucursales">					
+					
+					<b:inputText id="txtNombre" label="Nombre" colMd="12" value="#{adminSucursalesController.sucursal.nombre}" required="true" requiredMessage="El nombre es requerido"></b:inputText>
+					
+					<b:switch id="swEstatus" value="#{adminSucursalesController.sucursal.estatus}" label="Estatus" offText="Habiltar" onText="Deshabilitar" offColor="success" onColor="danger" rendered="#{adminSucursalesController.sucursal.idSucursal != null}" colMd="6" span="12"></b:switch>
+					
+					<b:row style="margin-bottom: 10px; margin-top: 10px">
+						<b:column colMd="6">
+							<b:button largeScreen="full-width" value="Cancelar" look="danger" dismiss="modal" onclick="return false;" style="width: 100%"></b:button>
+						</b:column>
+						
+						<b:column colMd="6">
+							<b:commandButton id="btnGuardar" value="Guardar" onclick="ajax:adminSucursalesController.guardar()" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') } " look="success" update="formRegistroSucursales, formAdminSucursales:msgValidaciones, formAdminSucursales:tblSucursales" style="width: 100%" rendered="#{adminSucursalesController.sucursal.idSucursal == null}"></b:commandButton>
+							<b:commandButton id="btnActualizar" value="Actualizar" onclick="ajax:adminSucursalesController.actualizar()" oncomplete="if(!validationFailed) { $('#amodal').modal('hide') } " look="success" update="formRegistroSucursales, formAdminSucursales:msgValidaciones, formAdminSucursales:tblSucursales" style="width: 100%" rendered="#{adminSucursalesController.sucursal.idSucursal != null}"></b:commandButton>
+						</b:column>
+					</b:row>
+					
+					<b:fetchBeanInfos></b:fetchBeanInfos>
+					<b:messages></b:messages>
+				</b:form>
+			
+			</b:modal>
+			
+		</b:row>
+	</b:container>           
+
+    </h:body>
+</html>

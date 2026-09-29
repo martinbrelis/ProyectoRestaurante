@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <ui:include src="/pages/commons/commons.xhtml"></ui:include>
+        <script type="text/javascript">
+        	//Funcion que permite realizar el drag and drop de los componetes
+		    function handleDrop(event, ui) {
+		        var droppedCar = ui.draggable;
+		 
+		        droppedCar.fadeOut('fast');
+		    }
+		</script>
+    </h:head>
+    
+    <h:body>    
+    
+    	<ui:include src="/pages/commons/navbar.xhtml"></ui:include>	
+       
+
+		<b:container>
+			<b:row>
+				<h:form id="formAdminMenu">
+				
+					<b:growl id="msgValidaciones" placementFrom="top" showDetail="true" showSummary="true"></b:growl>
+				
+					<b:panel id="pnlSeccionAsignacionAlimentos">
+						
+						<b:panel id="pnlAlimentosDisponibles" look="primary" title="Alimentos Disponibles" collapsible="false">
+							<p:dataGrid id="dataAlimentosDisponibles" var="alimentoDisponible" value="#{adminMenuController.alimentosDisponibles}" columns="4" layout="grid">
+					            <p:panel id="pnlAlimentosDisp" header="#{alimentoDisponible.nombre}" style="text-align:center; height: 350px">
+					                <h:panelGrid columns="1" style="width:100%">
+						                    <b:image value="/resources/images/alimentos/#{alimentoDisponible.imagen}" style="width: 100%" ></b:image>
+											<h:outputText value="#{alimentoDisponible.descripcion}"></h:outputText>
+											<h:outputText value="#{alimentoDisponible.precio}"></h:outputText>
+					                </h:panelGrid>
+					            </p:panel>
+					 
+					            <p:draggable for="pnlAlimentosDisp" revert="true" handle=".ui-panel-titlebar, .ui-panel-content" stack=".ui-panel" cursor="grab"/>
+					        </p:dataGrid>
+						</b:panel>
+						
+						<b:panel id="pnlAlimentosAsignados" title="Alimentos Asignados" look="primary" collapsible="false">
+						
+						     <p:outputPanel id="dropArea">
+						            <h:outputText value="¡Arrastra aquí!" rendered="#{empty adminMenuController.alimentosAsignados}" style="font-size:50px;" />
+							
+									<p:dataGrid id="dataAlimentosAsignados" var="alimentoAsignado" value="#{adminMenuController.alimentosAsignados}" columns="4" col-md="6" layout="grid">
+										<p:panel id="pnlAlimentosAsig" header="#{alimentoAsignado.nombre}" style="text-align: center">
+											<h:panelGrid columns="1">
+ 												<b:image value="/resources/images/alimentos/#{alimentoAsignado.imagen}" style="width: 100%" ></b:image>
+ 												<h:outputText value="#{alimentoAsignado.precio}"></h:outputText>
+												<b:commandButton ajax="true" size="sm" look="danger" style="margin-bottom: 20px" icon="trash" onclick="ajax:adminMenuController.quitarAlimentoMenu(alimentoAsignado)" update="formAdminMenu"></b:commandButton>
+											</h:panelGrid>
+										</p:panel>
+									</p:dataGrid>
+						     </p:outputPanel>
+						 
+						    <p:droppable for="pnlAlimentosAsignados" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="dataAlimentosDisponibles" onDrop="handleDrop">
+						        <p:ajax listener="#{adminMenuController.asignarAlimentosMenu}" update="dropArea, dataAlimentosDisponibles, msgValidaciones" />
+						    </p:droppable>
+						
+						</b:panel>
+						
+					</b:panel>
+					
+				</h:form>
+			</b:row>
+		</b:container>
+    </h:body>
+</html>

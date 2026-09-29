@@ -1,0 +1,4 @@
+com\di3go\restauranteentities\entity\CommonEntity.class
+com\di3go\restauranteentities\entity\Menu.class
+com\di3go\restauranteentities\entity\TipoRestaurante.class
+com\di3go\restauranteentities\entity\Restaurante.class
